@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+        <link href="styles.css" rel="stylesheet">
+        <title>Trivia!</title>
+        <script>
+            // TODO: Add code to check answers to questions
+            // part one:
+            // incorrect, button turn red with text below "incorrect"
+            // correct, button turn green with text below "Correct!"
+            //
+
+            document.addEventListener('DOMContentLoaded', function() {
+                    let corrects = document.querySelectorAll('.button_correct');
+                    for (let i = 0; i < corrects.length; i++) {
+                        corrects[i].addEventListener('click', function() {
+                            corrects[i].style.backgroundColor = '#04A66D';
+                            corrects[i].parentElement.querySelector('.feedback').innerHTML = 'Correct!';
+                        });
+                    }
+                    let incorrects = document.querySelectorAll('.button_incorrect');
+                    for (let i = 0; i < incorrects.length; i++) {
+                        incorrects[i].addEventListener('click', function() {
+                            incorrects[i].style.backgroundColor = '#f44336';
+                            incorrects[i].parentElement.querySelector('.feedback').innerHTML = 'Incorrect';
+                        });
+                    }
+
+            // part two:
+            // text field turns red and text appear beneath "Incorrect"
+            // text field turns green and text appear beneath "Correct!"
+            // document.querySelector
+            // addEventListener
+            let check = document.querySelector('#check')
+                check.addEventListener('click', function(){
+                    let input = document.querySelector('Input')
+                    if (input.value == '2') {
+                        input.style.backgroundColor = '#04A66D';
+                        input.parentElement.querySelector('.feedback').innerHTML = 'Correct!';
+                    } else {
+                        input.style.backgroundColor = '#f44336';
+                        input.parentElement.querySelector('.feedback').innerHTML = 'Incorrect';
+                    }
+                });
+            });
+
+        </script>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Trivia!</h1>
+        </div>
+
+        <div class="container">
+            <div class="section">
+                <h2>Part 1: Multiple Choice </h2>
+                <hr>
+                <!-- TODO: Add multiple choice question here -->
+                <h3>Which shape has 3 corners?</h3>
+                <button class="button_incorrect">Circle</button>
+                <button class="button_correct">Triangle</button>
+                <button class="button_incorrect">Square</button>
+                <p class="feedback"></p>
+            </div>
+
+            <div class="section">
+                <h2>Part 2: Free Response</h2>
+                <hr>
+                <h3>What is 1 + 1?</h3>
+                <input type="text"></input>
+                <button id="check">Check Answer</button>
+                <p class="feedback"></p>
+                <!-- TODO: Add free response question here -->
+                 <!-- input and button to confirm the answer-->
+            </div>
+        </div>
+    </body>
+</html>

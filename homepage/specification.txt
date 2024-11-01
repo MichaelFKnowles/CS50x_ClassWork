@@ -1,0 +1,50 @@
+HTML Usage:
+<h1></h1>
+<h2></h1>
+<br>
+<object></object>
+<button></button>
+<div></div>
+<p></p>
+<script></script>
+<nav></nav>
+<table></table>
+<td></td>
+<tr></tr>
+<b></b>
+
+CSS Usage:
+.header{}
+.content{}
+.dropbtn, .dropdown-button-content{}
+.dropdown{}
+.dropdown-content{}
+.show{}
+body{}
+
+position
+min-width
+min-height
+font-size
+text-align
+padding
+color
+background-color
+height
+margin-bottom
+cursor
+border
+display
+z-index
+box-shadow
+overflow
+text-decoration
+
+JavaScript Usage:
+1) I used JS to make the dropdown menu on the index.html page and to swap the pages which are loaded from the dropdown button into an object within the body of index.html to make navigation easier for the end user.
+
+Bootstrap Usage:
+1) Used the following code to make the page scale correctly for mobile devices:
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+

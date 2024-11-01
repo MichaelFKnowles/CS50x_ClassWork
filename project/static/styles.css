@@ -1,0 +1,128 @@
+/* START OF CSS settings from CS50 Finance pset */
+/* Size for brand */
+nav .navbar-brand
+{
+    font-size: xx-large;
+}
+
+/* Colors for brand */
+nav .navbar-brand .blue
+{
+    color: #537fbe;
+}
+nav .navbar-brand .red
+{
+    color: #ea433b;
+}
+nav .navbar-brand .yellow
+{
+    color: #f5b82e;
+}
+nav .navbar-brand .green
+{
+    color: #2e944b;
+}
+/* TABLES */
+table {
+    background-color: transparent;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+table th,
+table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+}
+
+tbody tr:nth-of-type(odd) {
+    background-color: rgb(179, 208, 255, 0.3)
+}
+
+/* END OF CSS settings from CS50 Finance pset */
+
+.text-right {
+    text-align: right;
+}
+
+.change_table_header, .current_value_table_header,
+.gain_loss_table_header, .buy_table_header, .sell_table_header {
+    min-width: 13%
+}
+
+.transaction_table_header {
+    min-width: 25%
+}
+
+.symbol_table_header, .share_price_table_header, .owned_table_header {
+    min-width: 8%
+}
+
+.share_value {
+    text-align: right;
+}
+
+
+/* HTML general font settings */
+html {
+    font-size: 16px;
+    font-family: "courier", monospace;
+    font-weight: 500;
+    font-variant: small-caps;
+}
+
+/* HOVER OVER DETAILS */
+/* REFERENCED  https://www.w3schools.com/howto/howto_css_tooltip.asp for initial guidance and then tweaked it*/
+.symbol {
+    position: relative;
+    /* display: None; */
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-color: grey;
+    text-align: center;
+    color: blue;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    min-width: 250px;
+    max-width: 400px;
+    background-color: rgb(180, 180, 205);
+    color: #fff;
+    text-align: left;
+    padding: 3px 3px 3px 3px;
+    border-radius: 6px;
+
+    /* positioning */
+    position: absolute;
+    z-index: 1;
+    top: 0%;
+    left: 130%;
+    margin-right: -30px;
+
+    /* fading in / out */
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 15%;
+    right: 103%;
+    margin-left: 5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #555 transparent transparent;
+}
+
+.symbol:hover {
+    background-color: rgb(180, 180, 205);
+}
+
+.symbol:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+

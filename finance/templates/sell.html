@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sell
+{% endblock %}
+
+{% block main %}
+
+<div class="d-inline-flex mw-auto p-3 bd-highlight">
+    <form action="/sell" method="post" class="d-inline-flex p-2 flex-grow-1 bd-highlight">
+        <!-- <label for="symbol">Select a symbol:</label> -->
+        <select class="d-inline-flex form-control mw-25%" name="symbol">
+            {% for row in data %}
+                <option value="{{ row.symbol }}">{{ row.symbol }}</option>
+            {% endfor %}
+        <input autocomplete="off" class="d-inline-flex form-control mw-25%" name="shares" placeholder="Quantity" type="number" min="1" required>
+        <button class="btn btn-outline-primary d-inline-flex ml-auto" type="submit">Sell</button>
+    </form>
+</div>
+{% endblock %}

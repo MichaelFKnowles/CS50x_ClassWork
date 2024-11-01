@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+<div>
+<button id="download" class="btn btn-outline-primary ml-auto" style="display: none; position: absolute; right: 15%">Download CSV</button>
+</div>
+<br>
+<div class="d-inline-flex justify-content-md-center p-3 bd-highlight">
+    <table id="stockTable" style="display: none;">
+        <div class="d-inline-flex mw-auto p-3 bd-highlight">
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Transaction Type</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                    <th>Cash Balance</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            </tbody>
+        </div>
+    </table>
+</div>
+<div id="error-message"></div>
+<div id="message"></div>
+<br>
+<form id="historyForm" name="historyForm"></form>
+    <div class="d-flex justify-content-md-center">
+        <button id="submit" class="btn btn-outline-primary ml-auto" type="submit">Update</button>
+    </div>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    window.onload = showHistory;
+    document.getElementById("submit").addEventListener("click", showHistory);
+    document.getElementById("download").addEventListener("click", downloadCSV);
+    });
+</script>
+<script>
+
+    function downloadCSV() {
+        // This function is from CS50 duck
+        console.log("**** download CSV button pressed")
+        let table = document.getElementById("stockTable");
+        let rows = table.querySelectorAll('tr');
+        let csvContent = '';
+        rows.forEach(row => {
+            let cols = row.querySelectorAll('td, th');
+            let rowData = [];
+            cols.forEach(col => rowData.push(`"${col.innerText}"`));
+            csvContent += rowData.join(',') + '\n';
+        });
+
+        let blob = new
+        Blob([csvContent], {
+            type: 'text/csv'
+        });
+        let url =URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.setAttribute('href', url);
+
+        a.setAttribute('download', 'table.csv');
+        a.click();
+
+    }
+
+    function showDownloadButton() {
+        button = document.getElementById("download");
+        button.style.display = "inline";
+    }
+    function showTable() {
+        table = document.getElementById("stockTable");
+        table.style.display = "inline";
+    }
+
+    function createTable(data) {
+        showTable();
+        console.log(data)
+        let table = document.querySelector('#stockTable tbody');
+        table.innerHTML = '';
+        data.forEach(symbol => {
+            let row = table.insertRow();
+            let symbolCell = row.insertCell(0);
+            let transactionTypeCell = row.insertCell(1);
+            let quantityCell = row.insertCell(2);
+            let amountCell = row.insertCell(3);
+            let cashCell = row.insertCell(4);
+            let timestampCell = row.insertCell(5);
+            symbolCell.className = 'symbol';
+            symbolCell.innerHTML = `${symbol.symbol}
+                                    <span class="tooltiptext">${symbol.longName} <br>
+                                    Previous Close: ${symbol.previous_close}</span>`
+            console.log("**** transaction amount: " + symbol.purchase_price)
+            amountCell.className = "text-right";
+            if(symbol.purchase_price != null) {
+                amountCell.textContent = symbol.purchase_price;
+                transactionTypeCell.style = "color: blue";
+                transactionTypeCell.textContent = "Buy";
+                cashCell.className = "text-right";
+                cashCell.style = "color: blue";
+            } else {
+                amountCell.textContent = symbol.sale_price;
+                transactionTypeCell.style = "color: green";
+                transactionTypeCell.textContent = "Sell";
+                cashCell.className = "text-right";
+                cashCell.style = "color: green";
+            }
+            quantityCell.textContent = symbol.quantity;
+
+            cashCell.textContent = symbol.cash_balance;
+            timestampCell.className = "text-right";
+            timestampCell.textContent = symbol.timestamp;
+
+        })
+        showDownloadButton();
+
+    };
+</script>
+
+<script src="/static/scripts.js">
+</script>
+{% endblock %}

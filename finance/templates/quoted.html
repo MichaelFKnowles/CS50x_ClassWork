@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quoted
+{% endblock %}
+
+{% block main %}
+    <form action="/quote" method="post">
+        <div class="d-flex justify-content-md-center p-3 bd-highlight">
+            <input type=hidden name="type" value="quote">
+            <input id="symbol" name="symbol" autocomplete="off" autofocus class="form-control w-auto" placeholder="Look up stock by symbol" type="text">
+            <button id="submit" class="btn btn-outline-primary ml-auto" type="submit">Submit</button>
+        </div>
+    </form>
+    <br>
+    <div class="d-inline-flex justify-content-md-center p-3 bd-highlight">
+        <!-- <table id="quotedStocks">
+            <div class="d-inline-flex mw-auto p-3 bd-highlight">
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Price (USD)</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                            {{ symbol }}
+                        </td>
+                        <td>
+                            {{ price | usd }}
+                        </td>
+                    </tr>
+                </tbody>
+            </div>
+        </table> -->
+        <p>A share of {{ symbol }} costs {{ price | usd }}.</p>
+    </div>
+{% endblock %}

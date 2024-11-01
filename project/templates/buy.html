@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Buy
+{% endblock %}
+
+{% block main %}
+<form id="stockForm" name="stockForm"></form>
+        <div class="d-flex justify-content-md-center">
+            <input id="symbol" autocomplete="off" autofocus class="form-control w-auto" name="symbol" placeholder="Look up stock by symbol" type="text">
+            <button id="submit" class="btn btn-outline-primary ml-auto" type="submit">Submit</button>
+        </div>
+    </form>
+    <br>
+    <br>
+    <div class="d-inline-flex justify-content-md-center p-3 bd-highlight">
+    <table id="stockTable" style="display: none;">
+        <div class="d-inline-flex mw-auto p-3 bd-highlight">
+            <thead>
+                <tr>
+                    <th class="symbol_table_header">Symbol</th>
+                    <th class="share_price_table_header border-0 text-end">Share Price</th>
+                    <th class="change_table_header border-0 text-end">Today's Change</th>
+                    <th class="transaction_table_header">Buy Shares</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            </tbody>
+        </div>
+    </table>
+    </div>
+    <br>
+    <div id="error-message"></div>
+    <div id="message"></div>
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function(){
+        document.getElementById("submit").addEventListener("click", fetchStocks);
+        }
+    );
+    </script>
+    <script>
+    function showTable() {
+        table = document.getElementById("stockTable");
+        table.style.display = "inline";
+    }
+
+    function createTable(data) {
+        showTable()
+        console.log(data)
+        let table = document.querySelector('#stockTable tbody');
+        table.innerHTML = '';
+            let row = table.insertRow(-1);
+            let symbolCell = row.insertCell(0);
+            let currentPPSCell = row.insertCell(1);
+            let todayvsyesterdayCell = row.insertCell(2);
+            let transactionCell = row.insertCell(3);
+            // let buyCell = row.insertCell(3);
+            symbolCell.className = 'symbol';
+            symbolCell.innerHTML = `${data.symbol}
+                                    <span class="tooltiptext">${data.longName} <br>
+                                    Previous Close: ${data.previous_close}</span>`
+            // nameCell.className = 'symbol';
+            // priceCell.textContent = data.price;
+            // priceCell.className = "text-right";
+            currentPPSCell.className = "border-0 text-end";
+            todayvsyesterdayCell.className = "text-end";
+            if (data.current_price_vs_previous_close > 0) {
+                currentPPSCell.innerHTML = `<div class="mw: 100%" style="color:green">${data.price}</div>`;
+                todayvsyesterdayCell.innerHTML = `<div class="mw: 100%" style="color:green">&#9650;
+                    ${Intl.NumberFormat("en-US", { style: "currency", currency: "USD" })
+                    .format(data.current_price_vs_previous_close)}</div>`;
+            } else if (data.current_price_vs_previous_close < 0) {
+                currentPPSCell.innerHTML = `<div class="mw: 100%" style="color:red">${data.price}</div>`;
+                todayvsyesterdayCell.innerHTML =`<div class="mw: 100%" style="color:red">&#9660;
+                    ${Intl.NumberFormat("en-US", { style: "currency", currency: "USD" })
+                    .format(data.current_price_vs_previous_close)}</div>`;
+            } else {
+                currentPPSCell.innerHTML = `<div>${data.price} &#9644;</div>`;
+                todayvsyesterdayCell.innerHTML =`<div>&#9644;</div>`;
+            };
+            transactionCell.innerHTML = `<div class="d-inline-flex p-2 flex-grow-1 bd-highlight"><input id="shares"
+                                    autocomplete="off" autofocus class="buy-shares-quantity d-inline-flex form-control mw-25%"
+                                    name="shares" placeholder="Shares" type="number"></input><button name="buy"
+                                    class="buy-button btn btn-outline-primary d-inline-flex ml-auto" type="submit">Buy</button></div>`;
+            // buyCell.innerHTML = '<form</form>';
+            Listener()
+        }
+
+        const sub = document.getElementById("symbol")
+        const key = sub.addEventListener("keydown", getKey)
+
+        function getKey(e) {
+            if (e.key === "Enter") {
+                fetchStocks();
+            }
+        }
+    </script>
+    <script src="/static/scripts.js"></script>
+
+{% endblock %}

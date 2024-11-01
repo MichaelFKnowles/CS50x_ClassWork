@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Buy
+{% endblock %}
+
+{% block main %}
+<!-- <form action="/quote" method="post">
+    <div class="d-flex justify-content-md-center p-3 bd-highlight">
+        <input type="hidden" name="type" value="buy">
+        <input name="symbol" autocomplete="off" autofocus class="form-control w-auto" placeholder="Look up stock by symbol" type="text">
+        <button class="btn btn-outline-primary ml-auto" type="submit">Submit</button>
+    </div>
+</form>
+
+<br>
+<div class="d-inline-flex justify-content-md-center p-3 bd-highlight">
+    <table id="buyStocks">
+        <div class="d-inline-flex mw-auto p-3 bd-highlight">
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Price</th>
+                    <th>Buy Shares</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        {{ symbol }}
+                    </td>
+                    <td>
+                        {% if price %}
+                        {{ price | usd }}
+                        {% endif %}
+                    </td>
+
+                    <td> -->
+                    <div class="d-inline-flex mw-auto p-3 bd-highlight">
+                        <form action="/buy" method="post" class="d-inline-flex p-2 flex-grow-1 bd-highlight">
+                            <input autocomplete="off" class="d-inline-flex form-control mw-25%" name="symbol" placeholder="Enter Share Ticker">
+                            <input autocomplete="off" class="d-inline-flex form-control mw-25%" name="shares" placeholder="Quantity" type="number" min="1" required>
+                            <button class="btn btn-outline-primary d-inline-flex ml-auto" type="submit">Buy</button>
+                        </form>
+                    </div>
+                    <!-- </td>
+                </tr>
+
+            </tbody>
+
+        </div>
+    </table> -->
+<!-- </div> -->
+{% endblock %}
+
+

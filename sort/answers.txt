@@ -1,0 +1,11 @@
+sort1 uses: Bubble Sort
+
+How do you know?: It was the fasetest for the sorted numbers, showing it did not need to do any sorting while processing because the numbers were already in a good position for the algorithm. Sort1 too nearly twice as long as Sort3  and more than 5 times as long as Sort2 for reversed, which seems to indicate that it is comparing the previous neighboring number as it sorts the list.
+
+sort2 uses: Merge Sort
+
+How do you know?: It was the fastest for random list of numbers, slightly fastest for sorted lists, however was the fastest for reversed.
+
+sort3 uses: Selection Sort
+
+How do you know?: The slowest for the sorted numbers, which corresponds to an expected Omega(n^2) time. For reversed, sort3 took half the time as sort1, but double the time as sort2, which I think shows it's not doing much more sorting than checking if the current number is larger or smaller than the next number in the list and moving the number.

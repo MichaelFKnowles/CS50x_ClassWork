@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+    <!-- <form id="stockForm" action="/quoted" method="post" name="stockForm"> -->
+
+    <form id="stockForm" name="stockForm" action="/quote" method="post"></form>
+        <div class="d-flex justify-content-md-center p-3 bd-highlight">
+            <input id="symbol" autocomplete="off" autofocus class="form-control w-auto" name="symbol" placeholder="Look up stock by symbol" type="text">
+            <button id="submit" class="btn btn-outline-primary ml-auto" type="submit">Submit</button>
+        </div>
+    </form>
+    <br>
+    <div class="d-inline-flex justify-content-md-center p-3 bd-highlight">
+        <table id="stockTable" style="display: none;">
+            <div class="d-inline-flex mw-auto p-3 bd-highlight">
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Company Name</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                </tbody>
+            </div>
+        </table>
+    </div>
+    <br>
+    <div id="error-message"></div>
+    <div id="message"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+
+
+        document.getElementById("submit").addEventListener("click", fetchStocks)
+        // document.getElementById("submit").addEventListener("keydown", (KeyboardEvent.enterKey) => {fetchStocks})
+
+
+
+
+        }
+
+    )
+    </script>
+    <script>
+    function showTable() {
+        table = document.getElementById("stockTable");
+        table.style.display = "inline";
+    }
+    const sub = document.getElementById("symbol")
+    const key = sub.addEventListener("keydown", getKey)
+
+    function getKey(e){
+        if (e.key === "Enter"){
+            fetchStocks();
+        }
+    }
+    function displayError(error) {
+        document.getElementById("error-message").innerText = error || ``;
+    }
+    // function displayError(error) {
+    //     showTable()
+    //     let table = document.querySelector('#quotedStocks tbody');
+    //     table.innerHTML = '';
+    //     let row = table.insertRow(-1);
+    //     let errorCell = row.insertCell(0);
+    //     errorCell.colSpan = 2;
+    //     // Spans across both columns!
+    //     errorCell.textContent = error;
+    // }
+    function displayMessage(message) {
+        document.getElementById("message").innerText = message || ``;
+    }
+    function createTable(data) {
+        showTable()
+        let table = document.querySelector('#stockTable tbody');
+        table.innerHTML = '';
+            let row = table.insertRow();
+            let symbolCell = row.insertCell(0);
+            let companyCell = row.insertCell(1);
+            let priceCell = row.insertCell(2);
+            symbolCell.textContent = data.symbol;
+            companyCell.textContent = data.longName;
+            priceCell.textContent = data.price;
+        };
+    </script>
+    <!-- <script src="/static/createtable.js"></script> -->
+    <script src="/static/scripts.js"></script>
+{% endblock %}

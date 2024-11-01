@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+    <!-- <form id="stockForm" action="/quoted" method="post" name="stockForm"> -->
+
+    <form action="/quote" method="post">
+        <div class="d-flex justify-content-md-center p-3 bd-highlight">
+            <input type=hidden name="type" value="quote">
+            <input id="symbol" name="symbol" autocomplete="off" autofocus class="form-control w-auto" placeholder="Look up stock by symbol" type="text">
+            <button id="submit" class="btn btn-outline-primary ml-auto" type="submit">Submit</button>
+        </div>
+    </form>
+
+{% endblock %}

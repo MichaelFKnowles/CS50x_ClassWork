@@ -1,0 +1,58 @@
+{% extends "index.html" %}
+
+{% block body %}
+    <!-- <form id="autoSubForm" action="/birthdays" method="get"></form> -->
+    <script>
+        window.onload=function(){
+            fetch('/birthdays')
+            .then(response => response.json())
+            .then(data => {
+                createTable(data);
+            });
+
+        function createTable(data) {
+            let table = document.querySelector(`#birthdayTable`);
+            table.innerHTML = '';
+            data.forEach(birthday => {
+                let row = table.insertRow();
+                let nameCell = row.insertCell(0);
+                let dateCell = row.insertCell(1);
+                nameCell.textContent = birthday.name;
+                dateCell.textContent = `${birthday.month} / ${birthday.day}`;
+            });
+        };
+    }
+    </script>
+
+<table id="birthdayTable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Birthday</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    </tbody>
+</table>
+    <!-- <script type="text/javascript">
+        window.onload=function(){
+            const auto = setTimeout(function() {submit_form();}, 100)
+
+
+        function submit_form(){
+            clearTimeout(auto);
+            document.getElementById("autoSubForm").submit();
+        }
+    }
+
+        function autorefresh(){
+            clearTimeout(auto);
+            auto = setTimeout(function() {submit_form(); autorefresh();}, 1000);
+        }
+    </script> -->
+
+
+    <!-- <div data-chart='{{ birthdays }}'></div> -->
+    <!-- <h1>test</h1> -->
+{% endblock %}

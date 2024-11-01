@@ -1,0 +1,168 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+
+
+{% block main %}
+<div class="d-flex justify-content-md-center p-3 bd-highlight">
+    <table id="stockTable" style="display: none;">
+        <div class="d-flex align-items-right mw-auto p-3 bd-highlight">
+            <thead>
+                <tr>
+                    <th class="symbol_table_header">Symbol</th>
+                    <th class="share_price_table_header border-0 text-end">Share Price</th>
+                    <th class="change_table_header border-0 text-end">Today's Change</th>
+                    <th class="owned_table_header border-0 text-end">Shares Owned</th>
+                    <th class="current_value_table_header border-0 text-end">Wallet Value </th>
+                    <th class="gain_loss_table_header border-0 text-end">Gain / Loss</th>
+                    <th class="transaction_table_header">Buy / Sell</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            </tbody>
+            <tfoot>
+
+            </tfoot>
+        </div>
+    </table>
+</div>
+<div id="error-message"></div>
+<div id="message"></div>
+<br>
+<form id="walletForm" name="walletForm"></form>
+    <div class="d-flex justify-content-md-center">
+        <button id="submit" class="btn btn-outline-primary ml-auto" type="submit">Update</button>
+    </div>
+</form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+window.onload = showWallet;
+document.getElementById("submit").addEventListener("click", showWallet);
+});
+</script>
+<script>
+
+function showTable() {
+        table = document.getElementById("stockTable");
+        table.style.display = "inline";
+    }
+
+
+function createTable(data) {
+    console.log(data)
+    showTable()
+    let table = document.querySelector('#stockTable tbody');
+    table.innerHTML = '';
+    let totalShareValue = 0;
+    data.forEach(symbol => {
+        totalShareValue += (parseFloat(symbol.current_price_per_share.replace('$','')) * parseFloat(symbol.quantity));
+        // console.log("totalsharevalue: " + totalShareValue);
+        let row = table.insertRow();
+        let symbolCell = row.insertCell(0);
+        let currentPPSCell = row.insertCell(1);
+        let todayvsyesterdayCell = row.insertCell(2);
+        let quantityCell = row.insertCell(3);
+        let currentValueCell = row.insertCell(4);
+        let gainvslossCell = row.insertCell(5);
+        let transactionCell = row.insertCell(6);
+        let ticker = symbol.symbol
+        symbolCell.className = 'symbol';
+        symbolCell.innerHTML = `${symbol.symbol}
+                                    <span class="tooltiptext">${symbol.longName} <br>
+                                    Previous Close: ${symbol.previous_close}</span>`
+        currentPPSCell.className = "border-0 text-end";
+        if (symbol.current_price_vs_previous_close > 0) {
+            currentPPSCell.innerHTML = `<div class="mw: 100%" style="color:green">${symbol.current_price_per_share}</div>`;
+            todayvsyesterdayCell.innerHTML = `<div class="mw: 100%" style="color:green">&#9650;
+                ${Intl.NumberFormat("en-US", { style: "currency", currency: "USD" })
+                .format(symbol.current_price_vs_previous_close)}</div>`;
+        } else if (symbol.current_price_vs_previous_close < 0) {
+            currentPPSCell.innerHTML = `<div class="mw: 100%" style="color:red">${symbol.current_price_per_share}</div>`;
+            todayvsyesterdayCell.innerHTML =`<div class="mw: 100%" style="color:red">&#9660;
+                ${Intl.NumberFormat("en-US", { style: "currency", currency: "USD" })
+                .format(symbol.current_price_vs_previous_close)}</div>`;
+        } else {
+            currentPPSCell.innerHTML = `<div>${symbol.current_price_per_share} &#9644;</div>`;
+            todayvsyesterdayCell.innerHTML =`<div>&#9644;</div>`;
+        };
+
+        quantityCell.className = "border-0 text-end";
+        quantityCell.textContent = symbol.quantity;
+        currentValueCell.className = "border-0 text-end";
+        let diff = symbol.current_val_vs_wallet_val
+        console.log("**** current value diff: " + symbol.current_value_diff)
+        console.log("**** difference: " + diff)
+        if (diff > 0) {
+            currentValueCell.innerHTML = `<div class="gain_loss" style="color:green">${symbol.current_value}</div>`;
+            gainvslossCell.innerHTML = `<div class="gain_loss" style="color:green">&#9650;
+                ${Intl.NumberFormat("en-US", { style: "currency", currency: "USD" })
+                .format(diff)}</div>`;
+        } else if (symbol.current_price_vs_previous_close < 0) {
+            currentValueCell.innerHTML = `<div class="gain_loss" style="color:red">${symbol.current_value}</div>`;
+            gainvslossCell.innerHTML = `<div class="gain_loss" style="color:red">&#9660;
+                ${Intl.NumberFormat("en-US", { style: "currency", currency: "USD" })
+                .format(diff)}</div>`;
+        } else {
+            currentValueCell.innerHTML = `<div>${symbol.current_value}</div>`;
+            gainvslossCell.innerHTML = `<div>&#9644;</div>`;
+        };
+        transactionCell.innerHTML = `<div class="d-inline-flex p-2 flex-grow-1 bd-highlight"><input id="shares"
+                                autocomplete="off" autofocus class="buy-shares-quantity d-inline-flex form-control mw-25%"
+                                name="shares" placeholder="Shares" type="number"></input><button name="buy"
+                                class="buy-button btn btn-outline-primary d-inline-flex ml-auto" type="submit">Buy</button></div>
+                                <br>
+                                <div class="p-2 d-inline-flex flex-grow-1 bd-highlight">
+                                <input name="shares" autocomplete="off" autofocus class="sell-shares-quantity d-inline-flex
+                                form-control mw-25%" placeholder="Shares" type="number"><button name="sell" class="sell-button
+                                btn btn-outline-primary d-inline-flex ml-auto" type="submit">Sell</button></div>`;
+    })
+
+    table = document.querySelector('#stockTable tfoot');
+    table.innerHTML = '';
+    let row = table.insertRow();
+    let sharesTotalCell=row.insertCell(0);
+    sharesTotalCell.colSpan = 6;
+    sharesTotalCell.className = "border-0 fw-bold text-end";
+    sharesTotalCell.innerHTML = "Total Shares Value:";
+    let shareCell=row.insertCell(1);
+    shareCell.className = "border-0 text-end";
+    shareCell.textContent = Intl.NumberFormat("en-US", { style: "currency", currency: "USD"}).format(totalShareValue);
+
+    row = table.insertRow();
+    let cashTotalCell=row.insertCell(0);
+    cashTotalCell.colSpan = 6;
+    cashTotalCell.className = "border-0 fw-bold text-end";
+    cashTotalCell.innerHTML = "Total Cash:";
+    let cashCell=row.insertCell(1);
+    cashCell.className = "border-0 text-end";
+    cashCell.textContent = data[0].cash;
+
+    row = table.insertRow();
+    let grandTotalCell=row.insertCell(0);
+    grandTotalCell.colSpan = 6;
+    grandTotalCell.className = "border-0 fw-bold text-end";
+    grandTotalCell.innerHTML = "Grand Total:";
+    let totalCell = row.insertCell(1);
+
+    cash = data[0].cash.replace('$','');
+    cash = parseFloat(cash.replace(',',''));
+    console.log(cash);
+    console.log("totalsharevalue: " + totalShareValue);
+    cash += totalShareValue;
+    totalCell.className = "border-0 fw-bold text-end";
+    totalCell.textContent = Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(cash);
+    Listener()
+    };
+
+</script>
+
+<script src="/static/scripts.js">
+</script>
+
+{% endblock %}

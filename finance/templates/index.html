@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+<form action="/">
+    <div class="d-flex justify-content-md-center p-3 bd-highlight">
+        <button class="btn btn-outline-primary ml-auto" type="submit">Update</button>
+    </div>
+</form>
+<br>
+<div class="d-inline-flex justify-content-md-center p-3 bd-highlight">
+    <table id="walletStocks">
+        <div class="d-inline-flex mw-auto p-3 bd-highlight">
+            {% if data %}
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Shares Owned</th>
+                    <th>Current Value Per Share</th>
+                    <th>Total Value</th>
+                    <th>Buy</th>
+                    <th>Sell</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    <td>
+                        {{ row.symbol }}
+                    </td>
+                    <td>
+                        {{ row.quantity }}
+                    </td>
+                    <td>
+                        {{ row.current_price_per_share | usd }}
+                    </td>
+                    <td>
+                        {{ row.current_value | usd }}
+                    </td>
+                    <td>
+                        <form action="/buy" method="post" class="d-inline-flex p-2 flex-grow-1 bd-highlight">
+                            <input type="hidden" name="symbol" value="{{ row.symbol }}">
+                            <input autocomplete="off" class="d-inline-flex form-control mw-25%" name="shares" placeholder="Shares" type="number" min="1" required>
+                            <button class="btn btn-outline-primary d-inline-flex ml-auto" type="submit">Buy</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/sell" method="post" class="d-inline-flex p-2 flex-grow-1 bd-highlight">
+                            <input type="hidden" name="symbol" value="{{ row.symbol }}">
+                            <input autocomplete="off" class="d-inline-flex form-control mw-25%" name="shares" placeholder="Shares" type="number" min="1" required>
+                            <button class="btn btn-outline-primary d-inline-flex ml-auto" type="submit">Sell</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="6" class="align-content: right">
+                        Total Stock Portfolio Value: {{ data[0].totalSales | usd}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" class="align-content: right">
+                        Total Cash: {{ data[0].cash | usd }}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" class="align-content: right">
+                        Grand Total: {{ data[0].totalGrand | usd }}
+                    </td>
+                </tr>
+            </tbody>
+            {% endif %}
+        </div>
+    </table>
+    <br>
+</div>
+{% if data %}
+<form action="/">
+    <div class="d-flex justify-content-md-center p-3 bd-highlight">
+        <button class="btn btn-outline-primary ml-auto" type="submit">Update</button>
+    </div>
+</form>
+{% else %}
+Make a transaction to see your wallet.
+{% endif %}
+{% endblock %}
+

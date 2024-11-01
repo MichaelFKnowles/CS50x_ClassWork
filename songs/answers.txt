@@ -1,0 +1,3 @@
+Purple and Orange, this person listens to high danceability and energy music.
+Hypothesis: This might not be very representative of the listener because some people listen to dance music to focus on tasks, or metal music to calm down.
+A better way to look into this would be to look into the time of day, number of times the song was played, genres of the music they listen to, and if the listener "liked" the song.

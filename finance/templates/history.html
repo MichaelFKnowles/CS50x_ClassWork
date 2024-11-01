@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Transaction History
+{% endblock %}
+
+{% block main %}
+<form action="/history">
+    <div class="d-flex justify-content-md-center p-3 bd-highlight">
+        <button class="btn btn-outline-primary ml-auto" type="submit">Update</button>
+    </div>
+</form>
+<br>
+<div class="d-inline-flex justify-content-md-center p-3 bd-highlight">
+    <table id="transactionHistory">
+        <div class="d-inline-flex mw-auto p-3 bd-highlight">
+            {% if data %}
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Shares</th>
+                    <th>Purchase Price</th>
+                    <th>Value Per Share</th>
+                    <th>Sale Price</th>
+                    <th>Value Per Share</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    <td>
+                        {{ row.symbol }}
+                    </td>
+                    <td>
+                        {{ row.quantity }}
+                    </td>
+                    <td>
+                        {% if row.purchase_price == NULL %}
+                        </td>
+                        {% else %}
+                        {{ row.purchase_price }}
+                        </td>
+                        {% endif %}
+                    <td>
+                        {{ row.purchase_price_value_per_share}}
+                    </td>
+                    <td>
+                        {{ row.sale_price }}
+                    </td>
+                    <td>
+                        {{ row.sale_price_value_per_share }}
+                    </td>
+                    <td>
+                        {{ row.timestamp }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            {% endif %}
+        </div>
+    </table>
+</div>
+<br>
+<form action="/history">
+    <div class="d-flex justify-content-md-center p-3 bd-highlight">
+        <button class="btn btn-outline-primary ml-auto" type="submit">Update</button>
+    </div>
+</form>
+{% endblock %}
